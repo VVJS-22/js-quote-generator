@@ -1,8 +1,8 @@
 const getQuote = async () => {
     setLoadingState();
     try {
-        const res = await fetch('https://dummyjson.com/quotes/random');
-        const {id, quote, author} = await res.json();
+        const res = await fetch('https://api.quotable.io/random');
+        const {_id: id, content: quote , author} = await res.json();
 
         const quoteWrapper = document.querySelector("#js_quote_wrapper");
         const quoteContainer = quoteWrapper.querySelector("#js_quote");
@@ -11,10 +11,10 @@ const getQuote = async () => {
         quoteWrapper.dataset.id = id;
         quoteContainer.textContent = quote;
         authorContainer.textContent = author;
-        removeLoadingState();
     } catch (error) {
-        removeLoadingState();
         setError(error.message);
+    } finally {
+        removeLoadingState();
     }
 }
 
