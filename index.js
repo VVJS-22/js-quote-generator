@@ -55,21 +55,18 @@ function saveQuote() {
     const author = document.querySelector("#js_author").textContent;
 
     let savedQuotes = JSON.parse(localStorage.getItem('quotes')) || [];
-    let alreadyExist;
-
-    savedQuotes.forEach(({id: quoteId}) => {
-        if (quoteId === id) {
-            alreadyExist = true;
-            return;
-        }
-    })
+    let alreadyExist = savedQuotes.some(({id: quoteId}) => quoteId === id)
     
     if (!alreadyExist) {
         const canSave = confirm("Are you sure to save this quote?");
         if (canSave) {
         savedQuotes.push({id, quote, author});
         let json = JSON.stringify(savedQuotes);
-        localStorage.setItem('quotes', json);
+        try {
+            localStorage.setItem('quotes', json);
+        } catch (error) {
+            alert(error.message);
+        }
         }
     } else {
         alert("This quote is already saved");
